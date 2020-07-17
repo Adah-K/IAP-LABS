@@ -12,6 +12,15 @@
         $city = $_POST['city_name'];
 
         $user = new User($first_name, $last_name, $city);
+
+        if(!$user->validateForm()){
+
+            $user->createFormErrorSessions();
+            header("Refresh:0");
+            die();
+
+        }
+
         $res = $user->save();
 
         if ($res) {
@@ -23,6 +32,7 @@
             echo "An Error Occured!";
 
         }
+
     }
 
 
@@ -37,13 +47,30 @@
     
         <title>IAP LAB</title>
 
+        <link rel = "stylesheet" type = "text/css" href = "validate.css">
+
+        <script type = "text/javascript" src ="validate.js"></script>
+
     </head>
 
     <body>
 
-        <form method = "post" action = "<?php $_SERVER['PHP_SELF']?> "> 
+        <form method = "post" name = "user_details" id = "user_details" onsubmit = "return (validateForm());" action = "<?php $_SERVER['PHP_SELF']?> "> 
 
-            <input type = "text" name = "first_name" required placeholder = "First Name"/>
+            <div id = "form-errors">
+
+                <?php
+
+                    session_start();
+                    if(!empty($_SESSION['form_errors'])){
+                        echo " ". $_SESSION['form_errors'];
+                        unset($_SESSION['form-errors']);
+                    }
+                ?>
+
+            </div>
+
+            <input type = "text" name = "first_name" placeholder = "First Name"/>
 
             <input type = "text" name = "last_name" placeholder = "Last Name"/>
 

@@ -9,6 +9,11 @@
         public function update();
         public function removeOne();
         public function removeAll();
+
+        //LAB 2
+
+        public function validateForm();
+        public function createFormErrorSessions();
     }
 
 ?>
