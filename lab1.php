@@ -10,8 +10,10 @@
         $first_name = $_POST['first_name'];
         $last_name = $_POST['last_name'];
         $city = $_POST['city_name'];
+        $uname = $_POST['username'];
+        $pass = $_POST['password'];
 
-        $user = new User($first_name, $last_name, $city);
+        $user = new User($first_name, $last_name, $city, $uname, $pass);
 
         if(!$user->validateForm()){
 
@@ -19,6 +21,13 @@
             header("Refresh:0");
             die();
 
+        }
+
+        if($user->isUserExist($uname)){
+            session_start();
+            $_SESSION['form_errors'] = "Sorry, '".$uname."' is already taken. Please choose another Username.";
+            header("Refresh:0");
+            die();
         }
 
         $res = $user->save();
@@ -76,9 +85,15 @@
 
             <input type = "text" name = "city_name" placeholder = "City"/>
 
+            <input type = "text" name = "username" placeholder = "Username"/>
+
+            <input type = "password" name = "password" placeholder = "Password"/>
+
             <button type = "submit" name = "btn-save"><strong>SAVE</strong></button>
 
         </form>
+
+        <a href = "login.php"> Already have an account? Login</a>
 
     </body>
 
